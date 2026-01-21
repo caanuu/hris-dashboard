@@ -62,3 +62,5 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 Dengan memanfaatkan Topsis Analysis dan Algoritma SAW 
 TOPSIS menghitung jarak karyawan terbaik terhadap Solusi Ideal Positif (Kriteria Max) dan terjauh dari Solusi Ideal Negatif. Nilai 1.0000 adalah nilai sempurna.
 Metode SAW : Simple Additive Weighting Ranking
+
+<img width="1200" height="554" alt="image" src="https://github.com/user-attachments/assets/1b916ad5-5367-4209-899a-f21e41983e5d" />
