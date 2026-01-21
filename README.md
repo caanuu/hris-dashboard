@@ -57,3 +57,8 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+Dengan memanfaatkan Topsis Analysis dan Algoritma SAW 
+TOPSIS menghitung jarak karyawan terbaik terhadap Solusi Ideal Positif (Kriteria Max) dan terjauh dari Solusi Ideal Negatif. Nilai 1.0000 adalah nilai sempurna.
+Metode SAW : Simple Additive Weighting Ranking
