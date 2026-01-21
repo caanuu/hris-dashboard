@@ -1,20 +1,16 @@
 <?php
 
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeeController;
 
-// Redirect halaman awal langsung ke Dashboard (tanpa login dulu)
+// Redirect halaman awal langsung ke Dashboard
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-// Hapus middleware(['auth']) sementara supaya tidak error
-// Route Dashboard
+// Hapus middleware(['auth']) agar tidak error minta login
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// Route Manajemen Karyawan (CRUD Lengkap)
+// Route untuk Karyawan (CRUD)
 Route::resource('employees', EmployeeController::class);
-
-// Hapus baris di bawah ini yang bikin error:
-// require __DIR__.'/auth.php';
