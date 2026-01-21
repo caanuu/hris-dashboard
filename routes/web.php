@@ -1,32 +1,50 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController; // Controller Auth
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\PayrollController;
-use App\Http\Controllers\CompanyStructureController; // Controller Baru
+use App\Http\Controllers\CompanyStructureController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SettingsController;
 
-Route::get('/', function () {
-    return redirect()->route('dashboard');
+// --- 1. GUEST ROUTES (Belum Login) ---
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// --- 2. AUTH ROUTES (Harus Login) ---
+Route::middleware('auth')->group(function () {
 
-// Manajemen Karyawan (CRUD Lengkap)
-Route::resource('employees', EmployeeController::class);
+    // Logout (Harus di dalam auth)
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Struktur Organisasi (Hanya Lihat)
-Route::get('/structure', [CompanyStructureController::class, 'index'])->name('structure.index');
+    // Redirect home ke dashboard
+    Route::get('/', function () {
+        return redirect()->route('dashboard'); });
 
-// Absensi
-Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
-Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// Cuti
-Route::resource('leaves', LeaveController::class)->only(['index', 'store', 'update']);
+    // Karyawan
+    Route::resource('employees', EmployeeController::class);
 
-// Penggajian
-Route::get('/payroll', [PayrollController::class, 'index'])->name('payroll.index');
-Route::post('/payroll', [PayrollController::class, 'store'])->name('payroll.store');
+    // Struktur
+    Route::get('/structure', [CompanyStructureController::class, 'index'])->name('structure.index');
+
+    // Operasional
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+
+    Route::resource('leaves', LeaveController::class)->only(['index', 'store', 'update']);
+
+    Route::get('/payroll', [PayrollController::class, 'index'])->name('payroll.index');
+    Route::post('/payroll', [PayrollController::class, 'store'])->name('payroll.store');
+
+    // Reports & Settings
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+});

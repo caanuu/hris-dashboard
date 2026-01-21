@@ -9,7 +9,6 @@ class Employee extends Model
 {
     use HasFactory;
 
-    // Guarded kosong berarti semua kolom boleh diisi lewat create()
     protected $guarded = [];
 
     // Relasi ke User (Akun Login)
@@ -28,5 +27,25 @@ class Employee extends Model
     public function position()
     {
         return $this->belongsTo(Position::class);
+    }
+
+    // --- TAMBAHAN RELASI BARU (PENTING) ---
+
+    // Relasi ke Absensi (One to Many)
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    // Relasi ke Cuti (One to Many)
+    public function leaves()
+    {
+        return $this->hasMany(Leave::class);
+    }
+
+    // Relasi ke Gaji (One to Many)
+    public function payrolls()
+    {
+        return $this->hasMany(Payroll::class);
     }
 }

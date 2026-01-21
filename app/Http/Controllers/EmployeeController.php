@@ -18,6 +18,14 @@ class EmployeeController extends Controller
         return view('employees.index', compact('employees'));
     }
 
+    // Tambahkan function ini di dalam class EmployeeController
+    public function show(Employee $employee)
+    {
+        // Load relasi user, department, position, dan history absensi/cuti
+        $employee->load(['user', 'department', 'position', 'attendances', 'leaves']);
+        return view('employees.show', compact('employee'));
+    }
+
     public function create()
     {
         $departments = Department::all();

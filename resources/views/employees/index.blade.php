@@ -1,74 +1,70 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="fw-bold mb-0">Daftar Karyawan</h4>
-        <a href="{{ route('employees.create') }}" class="btn btn-success btn-sm fw-bold">
-            <i class="bi bi-plus-circle me-1"></i> Tambah Karyawan
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="fs-5">
+            <span class="text-primary">tpl-hris</span> <span class="text-muted mx-1">/</span> <span
+                class="fw-bold">employees</span>
+            <span class="badge border text-muted ms-2 fw-normal rounded-pill">Public</span>
+        </div>
+
+        <a href="{{ route('employees.create') }}" class="btn btn-gh-primary btn-sm">
+            New Employee
         </a>
     </div>
 
-    <div class="gh-card mb-3 p-2 bg-light d-flex gap-2">
-        <input type="text" class="form-control form-control-sm" placeholder="Cari berdasarkan nama atau NIP...">
-        <select class="form-select form-select-sm" style="width: 150px;">
-            <option>Semua Dept</option>
-            <option>Mill</option>
-            <option>Plantation</option>
-        </select>
-        <button class="btn btn-sm btn-secondary">Filter</button>
-    </div>
-
-    <div class="gh-card">
-        <div class="gh-card-header py-2 bg-light">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-table me-2"></i> Data Pegawai Aktif
+    <div class="gh-box mb-0">
+        <div class="gh-box-header py-2 bg-light border-bottom-0 rounded-top">
+            <div class="d-flex align-items-center w-100">
+                <div class="me-3 fw-bold small text-dark">
+                    <i class="bi bi-people me-1"></i> {{ $employees->count() }} employees
+                </div>
+                <input type="text" class="form-control form-control-sm border-0 bg-transparent"
+                    placeholder="Search files..." style="max-width: 200px; box-shadow: none;">
             </div>
         </div>
-        <div class="table-responsive">
-            <table class="table table-hover mb-0 align-middle">
-                <thead class="bg-light text-secondary">
-                    <tr style="font-size: 13px;">
-                        <th class="ps-3 py-3">NIP</th>
-                        <th>NAMA LENGKAP</th>
-                        <th>DEPARTEMEN</th>
-                        <th>JABATAN</th>
-                        <th>BERGABUNG</th>
-                        <th class="text-end pe-3">AKSI</th>
+
+        <table class="table table-hover mb-0" style="font-size: 14px;">
+            <tbody class="border-top">
+                @foreach ($employees as $emp)
+                    <tr>
+                        <td class="px-3 py-2" style="width: 30px;">
+                            <i class="bi bi-file-earmark text-muted"></i>
+                        </td>
+                        <td class="px-3 py-2">
+                            <div class="d-flex align-items-center">
+                                <a href="{{ route('employees.show', $emp->id) }}"
+                                    class="fw-bold text-dark text-decoration-none me-2">
+                                    {{ $emp->user->name }}
+                                </a>
+                                <span class="badge border fw-normal text-muted bg-light">{{ $emp->position->title }}</span>
+                            </div>
+                        </td>
+                        <td class="px-3 py-2 text-muted small text-end">
+                            {{ $emp->department->name }}
+                        </td>
+                        <td class="px-3 py-2 text-end" style="width: 120px;">
+                            <div class="btn-group">
+                                <a href="{{ route('employees.edit', $emp->id) }}"
+                                    class="btn btn-sm btn-link text-muted p-0 me-3"><i class="bi bi-pencil"></i></a>
+
+                                <form action="{{ route('employees.destroy', $emp->id) }}" method="POST" class="d-inline"
+                                    onsubmit="return confirm('Delete this file?');">
+                                    @csrf @method('DELETE')
+                                    <button class="btn btn-sm btn-link text-danger p-0 border-0"><i
+                                            class="bi bi-trash"></i></button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach ($employees as $emp)
-                        <tr style="font-size: 14px;">
-                            <td class="ps-3 fw-mono text-muted">{{ $emp->nip }}</td>
-                            <td>
-                                <div class="fw-bold text-dark">{{ $emp->user->name }}</div>
-                                <div class="small text-muted" style="font-size: 12px;">{{ $emp->user->email }}</div>
-                            </td>
-                            <td>
-                                <span class="badge border text-dark fw-normal bg-light">
-                                    {{ $emp->department->name }}
-                                </span>
-                            </td>
-                            <td>{{ $emp->position->title }}</td>
-                            <td>{{ \Carbon\Carbon::parse($emp->join_date)->format('d M Y') }}</td>
-                            <td class="text-end pe-3">
-                                <div class="btn-group">
-                                    <button class="btn btn-sm btn-outline-secondary" title="Edit">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger" title="Hapus">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                @endforeach
+            </tbody>
+        </table>
+
         @if ($employees->isEmpty())
-            <div class="p-4 text-center text-muted">
-                <p>Belum ada data karyawan.</p>
+            <div class="p-5 text-center text-muted">
+                <h4>Welcome to your new repository!</h4>
+                <p>You don't have any employees yet.</p>
             </div>
         @endif
     </div>
