@@ -4,11 +4,11 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h4 class="fw-normal mb-1">Insights & Reports</h4>
-            <span class="text-muted small">Analisis Kinerja Karyawan & Operasional Perusahaan</span>
+            <span class="text-muted small">Analisis Kinerja & Operasional dengan Multi-Algoritma</span>
         </div>
         <div class="btn-group">
             <button class="btn btn-sm btn-gh-default active">Bulan Ini</button>
-            <button class="btn btn-sm btn-gh-default">Tahun Ini</button>
+            <button class="btn btn-sm btn-gh-default">Quarterly</button>
         </div>
     </div>
 
@@ -23,8 +23,11 @@
                 <a class="nav-link text-dark bg-white border rounded mb-2 shadow-sm" href="#attendance-pulse">
                     <i class="bi bi-graph-up me-2 text-primary"></i> Attendance Pulse
                 </a>
-                <a class="nav-link text-dark bg-white border rounded mb-2 shadow-sm" href="#top-performers">
-                    <i class="bi bi-trophy me-2 text-warning"></i> Top Performers
+                <a class="nav-link text-dark bg-white border rounded mb-2 shadow-sm" href="#saw-analysis">
+                    <i class="bi bi-trophy me-2 text-warning"></i> SAW Ranking
+                </a>
+                <a class="nav-link text-dark bg-white border rounded mb-2 shadow-sm" href="#topsis-analysis">
+                    <i class="bi bi-bar-chart-steps me-2 text-info"></i> TOPSIS Analysis
                 </a>
             </nav>
         </div>
@@ -87,14 +90,14 @@
                 @endif
             </div>
 
-            <div id="top-performers" class="gh-box mb-4">
+            <div id="saw-analysis" class="gh-box mb-4">
                 <div class="gh-box-header py-3 bg-light border-bottom">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="fw-bold mb-0"><i class="bi bi-award me-2 text-warning"></i>Top Performers</h6>
-                            <span class="small text-muted">Algoritma Simple Additive Weighting (SAW)</span>
+                            <h6 class="fw-bold mb-0"><i class="bi bi-award me-2 text-warning"></i>Metode SAW</h6>
+                            <span class="small text-muted">Simple Additive Weighting Ranking</span>
                         </div>
-                        <span class="badge bg-dark">Top 5</span>
+                        <span class="badge bg-warning text-dark">Top 5</span>
                     </div>
                 </div>
 
@@ -111,7 +114,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($topPerformers as $index => $performer)
+                            @forelse($topPerformersSAW as $index => $performer)
                                 <tr>
                                     <td class="ps-4 fw-bold text-muted">#{{ $index + 1 }}</td>
                                     <td>
@@ -119,47 +122,82 @@
                                         <div class="small text-muted">{{ $performer->position }}</div>
                                     </td>
                                     <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2 small fw-bold">{{ $performer->attendance_score }}</span>
-                                            <div class="progress flex-grow-1" style="height: 6px; width: 60px;">
-                                                <div class="progress-bar bg-primary"
-                                                    style="width: {{ $performer->attendance_score }}%"></div>
-                                            </div>
-                                        </div>
+                                        <span
+                                            class="badge border fw-normal bg-light">{{ $performer->attendance_score }}</span>
                                     </td>
                                     <td>
-                                        <div class="d-flex align-items-center">
-                                            <span class="me-2 small fw-bold">{{ $performer->loyalty_score }}</span>
-                                            <div class="progress flex-grow-1" style="height: 6px; width: 60px;">
-                                                <div class="progress-bar bg-info"
-                                                    style="width: {{ $performer->loyalty_score }}%"></div>
-                                            </div>
-                                        </div>
+                                        <span
+                                            class="badge border fw-normal bg-light">{{ $performer->loyalty_score }}</span>
                                     </td>
                                     <td>
                                         <span class="fw-bold fs-5 text-dark">{{ $performer->final_score }}</span>
                                     </td>
                                     <td class="text-end pe-4">
                                         <span
-                                            class="badge border rounded-pill
-                                    {{ $performer->grade == 'Top Performer' ? 'bg-success bg-opacity-10 text-success border-success' : 'bg-light text-dark' }}">
+                                            class="badge border rounded-pill {{ $performer->grade == 'Top Performer' ? 'bg-success bg-opacity-10 text-success border-success' : 'bg-light text-dark' }}">
                                             {{ $performer->grade }}
                                         </span>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center py-5 text-muted">
-                                        <i class="bi bi-people fs-1 d-block mb-2"></i>
-                                        Data karyawan belum cukup untuk kalkulasi skor.
-                                    </td>
+                                    <td colspan="6" class="text-center py-4 text-muted">Data belum cukup.</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            <div id="topsis-analysis" class="gh-box mb-4">
+                <div class="gh-box-header py-3 bg-light border-bottom">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="fw-bold mb-0"><i class="bi bi-bar-chart-steps me-2 text-info"></i>Metode TOPSIS</h6>
+                            <span class="small text-muted">Technique for Order of Preference by Similarity to Ideal
+                                Solution</span>
+                        </div>
+                        <span class="badge bg-info text-dark">Recommendation</span>
+                    </div>
+                </div>
+                <div class="gh-box-body">
+                    <p class="small text-muted mb-3">
+                        TOPSIS menghitung jarak karyawan terbaik terhadap <strong>Solusi Ideal Positif</strong> (Kriteria
+                        Max) dan terjauh dari <strong>Solusi Ideal Negatif</strong>. Nilai 1.0000 adalah nilai sempurna.
+                    </p>
+                    <div class="table-responsive border rounded">
+                        <table class="table table-hover mb-0 align-middle">
+                            <thead class="bg-light text-secondary small">
+                                <tr>
+                                    <th class="ps-4">Rank</th>
+                                    <th>Karyawan</th>
+                                    <th>Jabatan</th>
+                                    <th class="text-end pe-4">Nilai Preferensi (V)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($topPerformersTOPSIS as $index => $performer)
+                                    <tr>
+                                        <td class="ps-4 fw-bold text-muted">#{{ $index + 1 }}</td>
+                                        <td>
+                                            <div class="fw-bold text-dark">{{ $performer->name }}</div>
+                                        </td>
+                                        <td><span class="small text-muted">{{ $performer->position }}</span></td>
+                                        <td class="text-end pe-4">
+                                            <span class="fw-bold text-info fs-5">{{ $performer->preference }}</span>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center py-4 text-muted">Data belum cukup.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div class="gh-box-footer bg-light p-2 small text-muted border-top text-center">
-                    Formula: (Skor Absen x 0.7) + (Skor Masa Kerja x 0.3)
+                    Jika Ranking SAW dan TOPSIS berbeda, disarankan menggunakan TOPSIS untuk keputusan strategis.
                 </div>
             </div>
 

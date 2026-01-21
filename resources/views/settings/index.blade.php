@@ -8,10 +8,10 @@
                     <a href="#"
                         class="list-group-item list-group-item-action fw-bold border-start border-3 border-danger ps-3">Public
                         Profile</a>
-                    <a href="#" class="list-group-item list-group-item-action text-muted">Account</a>
+                    {{-- <a href="#" class="list-group-item list-group-item-action text-muted">Account</a>
                     <a href="#" class="list-group-item list-group-item-action text-muted">Appearance</a>
                     <a href="#" class="list-group-item list-group-item-action text-muted">Accessibility</a>
-                    <a href="#" class="list-group-item list-group-item-action text-muted">Notifications</a>
+                    <a href="#" class="list-group-item list-group-item-action text-muted">Notifications</a> --}}
                 </div>
             </div>
         </div>

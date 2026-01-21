@@ -31,7 +31,7 @@
                             <div class="d-flex align-items-center small">
                                 <span class="d-inline-block rounded-circle bg-warning me-2"
                                     style="width: 10px; height: 10px;"></span>
-                                JavaScript
+                                Karyawan
                                 <span class="ms-3 text-dark fw-bold">{{ $totalEmployees }} People</span>
                             </div>
                         </div>
